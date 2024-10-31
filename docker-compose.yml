@@ -11,7 +11,7 @@ version: "3.7"
 services:
   traefik:
     # The official v2.4 Traefik docker image
-    image: traefik:v3.1
+    image: traefik:v3
     container_name: traefik
     hostname: traefik
     restart: unless-stopped
