@@ -21,7 +21,7 @@ providers:
 certificatesResolvers:
   letsencrypt:
     acme:
-      email:
+      email: marionumza@gmail.com
       storage: acme.json
       httpChallenge:
         entryPoint: http
