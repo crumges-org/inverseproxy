@@ -5,13 +5,9 @@
 ###    TRAEFIK NO USA VOLUMES NI NAMED VOLUMES -  SOLO BIND MOUNT     ###
 ###                                                                   ###
 #########################################################################
-
-version: "3.7"
-
 services:
   traefik:
-    # The official v2.4 Traefik docker image
-    image: traefik:v2.4
+    image: traefik:v2.11
     container_name: traefik
     hostname: traefik
     restart: unless-stopped
@@ -24,17 +20,14 @@ services:
       - public
       - private
     ports:
-      # The HTTP port
       - "80:80"
-      # The Web UI (enabled by --api.insecure=true)
       - "443:443"
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      # Bind mounts for Static configuration:
       - ./traefik.yml:/traefik.yml:ro
-
+      - ./acme.json:/acme.json
   dockersocket:
-    image: tecnativa/docker-socket-proxy
+    image: tecnativa/docker-socket-proxy:0.2
     privileged: true
     networks:
       private:
@@ -47,17 +40,11 @@ services:
       SWARM: 1
       TASKS: 1
     restart: unless-stopped
-
 networks:
   inverseproxy_shared:
-    name: inverseproxy_shared
-    internal: true
-    driver_opts:
-      encrypted: 1
-
+    external: true
   private:
     internal: true
     driver_opts:
       encrypted: 1
-
   public:
