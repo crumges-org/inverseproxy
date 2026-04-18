@@ -1,20 +1,14 @@
-#########################################################################
-###                                                                   ###
-###              SOLO PARA USO EN SERVER DE PRODUCCION                ###
-###                                                                   ###
-###    TRAEFIK NO USA VOLUMES NI NAMED VOLUMES -  SOLO BIND MOUNT     ###
-###                                                                   ###
-#########################################################################
+version: "3.8"
 services:
   traefik:
-    image: traefik:v2.11
+    image: traefik:v2.10
     container_name: traefik
     hostname: traefik
     restart: unless-stopped
-    depends_on:
-      - dockersocket
     security_opt:
       - no-new-privileges:true
+    environment:
+      - DOCKER_API_VERSION=1.40
     networks:
       - inverseproxy_shared
       - public
@@ -25,24 +19,15 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ./traefik.yml:/traefik.yml:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./acme.json:/acme.json
-  dockersocket:
-    image: tecnativa/docker-socket-proxy:0.2
-    privileged: true
-    networks:
-      private:
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-    environment:
-      CONTAINERS: 1
-      NETWORKS: 1
-      SERVICES: 1
-      SWARM: 1
-      TASKS: 1
-    restart: unless-stopped
+
 networks:
   inverseproxy_shared:
-    external: true
+    name: inverseproxy_shared
+    internal: true
+    driver_opts:
+      encrypted: 1
   private:
     internal: true
     driver_opts:
