@@ -14,14 +14,13 @@ entryPoints:
 
 providers:
   docker:
-    #endpoint: "unix:///var/run/docker.sock"
-    endpoint: "http://dockersocket:2375"
+    endpoint: "unix:///var/run/docker.sock"
     exposedByDefault: false
 
 certificatesResolvers:
   letsencrypt:
     acme:
-      email: marionumza@gmail.com
+      email: marionumza@gmail.com  # ← CAMBIA ESTO POR TU EMAIL
       storage: acme.json
       httpChallenge:
         entryPoint: http
