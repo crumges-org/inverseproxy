@@ -1,26 +1,21 @@
 # STATIC CONFIGURATION
-
 log:
   level: INFO
-
 api:
   dashboard: false
-
 entryPoints:
   http:
     address: ":80"
   https:
     address: ":443"
-
 providers:
   docker:
     endpoint: "unix:///var/run/docker.sock"
     exposedByDefault: false
-
 certificatesResolvers:
   letsencrypt:
     acme:
-      email: marionumza@gmail.com  # ← CAMBIA ESTO POR TU EMAIL
-      storage: acme.json
+      email: marionumza@gmail.com
+      storage: /etc/traefik/acme.json
       httpChallenge:
         entryPoint: http
